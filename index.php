@@ -4,8 +4,13 @@
 
 	try {
 
-		$market = "btc-ada";
 
+		foreach (getMarkets() as $market) {
+			$coin = new Coin($market->MarketName);
+			dd($coin);
+		}
+
+		$market = "btc-ada";
 		// get a coin current market value
 		$coin = new Coin($market);
 
