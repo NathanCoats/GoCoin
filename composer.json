@@ -1,0 +1,20 @@
+{
+    "name": "nathan/bittrex",
+    "type": "project",
+    "authors": [
+        {
+            "name": "coanat40",
+            "email": "nathangcoats@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "classmap": [
+            "classes"
+        ],
+        "files" : [
+            "util.php"
+        ]
+    }
+}
