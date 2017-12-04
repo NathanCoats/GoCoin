@@ -16,11 +16,8 @@
 			$this->version = "v1.1";
 			$this->url = "$this->base_url/$this->version/$this->uri";
 			
-			$credentials = include("credentials.php");
-
-			$this->secret = $credentials["secret"];
-			$this->key = $credentials["key"];
-
+			$this->secret = Config::get("secret");
+			$this->key = Config::get("key");
 
 		}
 
