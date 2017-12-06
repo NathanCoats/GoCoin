@@ -54,11 +54,11 @@
 						$coin->buy($qty, $rate);
 						Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 2% over " . number_format($five_minute_previous, 8) );
 					}
-					if( $thirty_minute_diff > 5 ) {
+					else if( $thirty_minute_diff > 5 ) {
 						$coin->buy($qty, $rate);
 						Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 5% over " . number_format($thirty_minute_previous, 8) );
 					}
-					if( $sixty_minute_diff > 10 ) {
+					else if( $sixty_minute_diff > 10 ) {
 						$coin->buy($qty, $rate);
 						Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 10% over " . number_format($sixty_minute_previous, 8) );
 					}

@@ -120,11 +120,12 @@
 
 		public function buy($qty, $rate) {
 			//this status variable is to make sure that the purchase went through.
-			$status = true;
-			//$status = Market::buy($this->type, $qty, $rate);
-			if($status) {
+			$uuid = true;
+
+			//$uuid = Market::buy($this->type, $qty, $rate);
+			if($uuid) {
 				$this->setPurchaseRate($rate);
-				$this->setBuyUUID();
+				$this->setBuyUUID($uuid);
 			}
 			else {
 				$this->setPendingPurchaseRate($rate);
@@ -137,10 +138,13 @@
 		}
 
 		public function sell($qty, $rate) {
-			$status = true;
-			//$status = Market::sell($this->type, $qty, $rate);
-			if($status) {
+			//this status variable is to make sure that the purchase went through.
+			$uuid = true;
+
+			//$uuid = Market::sell($this->type, $qty, $rate);
+			if($uuid) {
 				$this->setRunHigh(0);
+				$this->setSellUUID($uuid);
 				$this->setPurchaseRate(0);
 			}
 			//Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
