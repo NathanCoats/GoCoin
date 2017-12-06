@@ -53,6 +53,22 @@
 			$coins[] = new Coin("btc-ada");
 			$coins[] = new Coin("btc-ark");
 			$coins[] = new Coin("btc-powr");
+			$coins[] = new Coin("btc-eth");
+			$coins[] = new Coin("btc-ltc");
+			$coins[] = new Coin("btc-vtc");
+			$coins[] = new Coin("btc-waves");
+			$coins[] = new Coin("btc-mona");
+			$coins[] = new Coin("btc-omg");
+			$coins[] = new Coin("btc-eng");
+			$coins[] = new Coin("btc-sc");
+			$coins[] = new Coin("btc-nxt");
+			$coins[] = new Coin("btc-xrp");
+			$coins[] = new Coin("btc-neo");
+			$coins[] = new Coin("btc-snt");
+			$coins[] = new Coin("btc-wtc");
+			$coins[] = new Coin("btc-emc2");
+			$coins[] = new Coin("btc-fct");
+
 
 			return $coins;
 		}
@@ -109,29 +125,29 @@
 			$status = true;
 			//$status = Market::buy($this->type, $qty, $rate);
 			if($status) {
-				$rate->setPurchaseRate($rate);
+				$this->setPurchaseRate($rate);
 			}
 			else {
-				$rate->setPendingPurchaseRate($rate);
+				$this->setPendingPurchaseRate($rate);
 			}
-			Notification::sendNotification($this->type, "Buy at $rate");
+			Notification::sendNotification($this->type, "Buy at " . number_format($rate,8));
 
 			// Log
 			//Log::log($this->type, $rate, date("Y-m-d H:i:s"));
-			exit(1);
+			// exit(1);
 		}
 
 		public function sell($qty, $rate) {
 			$status = true;
 			//$status = Market::sell($this->type, $qty, $rate);
 			if($status) {
-				$rate->setPurchaseRate(0);
+				$this->setPurchaseRate(0);
 			}
-			Notification::sendNotification($this->type, "Sell at $rate");
+			Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
 
 			// Log
 			//Log::log($this->type, $rate, date("Y-m-d H:i:s"));
-			exit(1);
+			// exit(1);
 		}
 
 

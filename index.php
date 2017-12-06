@@ -3,8 +3,6 @@
 	require __DIR__ . '/vendor/autoload.php';
 
 	try {
-
-
 		//$coins = Coin::getAll();
 		$coins = Coin::getTestCoins();
 
@@ -21,7 +19,7 @@
 				$rate = (float)$rate;
 
 				// this will get the percentage difference between now and 5 minutes ago
-				$one_minute_diff = $coin->getDifference($rate, 1);
+				// $one_minute_diff = $coin->getDifference($rate, 1);
 				$five_minute_diff = $coin->getDifference($rate, 5);
 				$thirty_minute_diff = $coin->getDifference($rate, 30);
 				$sixty_minute_diff = $coin->getDifference($rate, 60);
@@ -48,6 +46,7 @@
 				// this will have to be fixed soon.
 				$qty = 1;
 
+					$coin->buy($qty, $rate);
 
 				// Buy Block
 				if( ($five_minute_diff > 2 || $thirty_minute_diff > 5 || $sixty_minute_diff > 10) && $purchase_rate == 0) {
@@ -67,10 +66,10 @@
 
 			}
 			sleep(1);
-			//$timeConsumed = round(microtime(true) - $curTime,3)*1000; 
+			//$timeConsumed = round(microtime(true) - $curTime,3)*1000;
 
 		}
- 
+
 		dd("Done");
 	}
 	catch(Exception $e) {
