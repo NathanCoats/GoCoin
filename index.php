@@ -46,7 +46,6 @@
 				// this will have to be fixed soon.
 				$qty = 1;
 
-					$coin->buy($qty, $rate);
 
 				// Buy Block
 				if( ($five_minute_diff > 2 || $thirty_minute_diff > 5 || $sixty_minute_diff > 10) && $purchase_rate == 0) {

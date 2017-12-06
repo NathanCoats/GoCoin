@@ -65,7 +65,6 @@
 			$coins[] = new Coin("btc-xrp");
 			$coins[] = new Coin("btc-neo");
 			$coins[] = new Coin("btc-snt");
-			$coins[] = new Coin("btc-wtc");
 			$coins[] = new Coin("btc-emc2");
 			$coins[] = new Coin("btc-fct");
 
