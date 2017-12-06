@@ -21,7 +21,7 @@
 
 		}
 
-		public function getRequest($data, $include_api = false, $disable_ssl = true) {
+		public function getRequest($data = [], $include_api = false, $disable_ssl = true) {
 
 			if($include_api === true) {
 				$data["nonce"] = time();

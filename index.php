@@ -4,57 +4,74 @@
 
 	try {
 
-		$ada_high = 0.00001250;
-		$ada_low = 0.00001100;
 
-		// $powr_high = 0.00006600;
-		// $powr_low = 0.00006400;
-
-		
+		//$coins = Coin::getAll();
+		$coins = Coin::getTestCoins();
 
 		while(true) {
-			$ada_coin = new Coin("btc-ada");
-			//$powr_coin = new Coin("btc-powr");
-			$ada_rate = $ada_coin->getLast();
-			//$powr_rate = $powr_coin->getLast();
 
-			if($ada_rate >= $ada_high || $ada_rate <= $ada_low) {
-				Notification::sendNotification("ada", "ada is $ada_rate");
-				exit(1);
-			} 
-			// if($powr_rate >= $powr_high) {
-			// 	Notification::sendNotification("powr", "powr is $powr_rate");
-			// 	exit(1);
-			// } 
-			sleep(3);
+
+			foreach($coins as $coin) {
+				//$curTime = microtime(true);
+
+				$rate = $coin->getLiveLast();
+				$coin->addRate($rate);
+
+				$rate = number_format($rate, 8);
+				$rate = (float)$rate;
+
+				// this will get the percentage difference between now and 5 minutes ago
+				$one_minute_diff = $coin->getDifference($rate, 1);
+				$five_minute_diff = $coin->getDifference($rate, 5);
+				$thirty_minute_diff = $coin->getDifference($rate, 30);
+				$sixty_minute_diff = $coin->getDifference($rate, 60);
+
+				// if($one_minute_diff != 0) {
+				// 	echo $coin->getType() . " : " . $one_minute_diff . "\n";
+				// }
+
+				// if($five_minute_diff != 0) {
+				// 	echo $coin->getType() . " : " . $five_minute_diff . "\n";
+				// }
+
+				// if($thirty_minute_diff != 0) {
+				// 	echo $coin->getType() . " : " . $thirty_minute_diff . "\n";
+				// }
+
+				// if($sixty_minute_diff != 0) {
+				// 	echo $coin->getType() . " : " . $sixty_minute_diff . "\n";
+				// }
+
+
+				$purchase_rate = $coin->getPurchaseRate();
+
+				// this will have to be fixed soon.
+				$qty = 1;
+
+
+				// Buy Block
+				if( ($five_minute_diff > 2 || $thirty_minute_diff > 5 || $sixty_minute_diff > 10) && $purchase_rate == 0) {
+					$coin->buy($qty, $rate);
+				}
+
+				// Sell Block
+				else if( $five_minute_diff < 2 && $purchase_rate > 0) {
+					$coin->sell($qty, $rate);
+
+				}
+
+				// Just Wait
+				else {
+
+				}
+
+			}
+			sleep(1);
+			//$timeConsumed = round(microtime(true) - $curTime,3)*1000; 
+
 		}
  
 		dd("Done");
-		// $interesting_markets = [
-		// 	"BTC-POWR",
-		// 	"BTC-XVG",
-		// 	"BTC-EMC2",
-		// 	"BTC-DASH",
-		// 	"BTC-VTC",
-		// 	"BTC-ZEC",
-		// ];
-
-		// foreach (getMarkets() as $market) {
-		// 	$coin = new Coin($market->MarketName);
-		// 	dd($coin);
-		// }
-
-		// $market = "btc-ada";
-		// // get a coin current market value
-		// $coin = new Coin($market);
-
-		// $quantity = 45;
-		// $rate = $coin->getLast();
-
-		// //$result = Market::sell($market, $quantity, $rate);
-		// //$result = Market::buy($market, $quantity, $rate);
-
-		// dd($result);
 	}
 	catch(Exception $e) {
 		dd($e);
