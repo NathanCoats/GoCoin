@@ -50,24 +50,11 @@
 		public static function getTestCoins() {
 
 			$coins = [];
-			$coins[] = new Coin("btc-ada");
-			$coins[] = new Coin("btc-ark");
-			$coins[] = new Coin("btc-powr");
-			$coins[] = new Coin("btc-eth");
-			$coins[] = new Coin("btc-ltc");
-			$coins[] = new Coin("btc-vtc");
-			$coins[] = new Coin("btc-waves");
-			$coins[] = new Coin("btc-mona");
-			$coins[] = new Coin("btc-omg");
-			$coins[] = new Coin("btc-eng");
-			$coins[] = new Coin("btc-sc");
-			$coins[] = new Coin("btc-nxt");
-			$coins[] = new Coin("btc-xrp");
-			$coins[] = new Coin("btc-neo");
-			$coins[] = new Coin("btc-snt");
-			$coins[] = new Coin("btc-emc2");
-			$coins[] = new Coin("btc-fct");
+			$active_coins = Config::get("active_coins");
 
+			foreach ($active_coins as $coin) {
+				$coins[] = new Coin($coin);
+			}
 
 			return $coins;
 		}
@@ -112,9 +99,20 @@
 			$seconds = $minutes * 10;
 			if( !empty($this->rates[$seconds - 1]) ) {
 				$old_rate = floatval($this->rates[$seconds - 1]);
+				if($old_rate <= 0 || $new_rate <= 0) return 0;
+
 				$percent = (($new_rate - $old_rate) / $old_rate) * 100;
 
 				return $percent;
+			}
+			else return 0;
+		}
+
+		public function getPast($minutes) {
+			$seconds = $minutes * 10;
+			if( !empty($this->rates[$seconds - 1]) ) {
+				$old_rate = floatval($this->rates[$seconds - 1]);
+				return $old_rate;
 			}
 			else return 0;
 		}
@@ -129,7 +127,7 @@
 			else {
 				$this->setPendingPurchaseRate($rate);
 			}
-			Notification::sendNotification($this->type, "Buy at " . number_format($rate,8));
+			//Notification::sendNotification($this->type, "Buy at " . number_format($rate,8));
 
 			// Log
 			//Log::log($this->type, $rate, date("Y-m-d H:i:s"));
@@ -142,7 +140,7 @@
 			if($status) {
 				$this->setPurchaseRate(0);
 			}
-			Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
+			//Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
 
 			// Log
 			//Log::log($this->type, $rate, date("Y-m-d H:i:s"));

@@ -1,0 +1,37 @@
+<?php
+	return [
+		"secret"			=> '',
+		"key"				=> '',
+		"email"				=> '',
+		"email_password"	=> '',
+		'to_email'			=> '',
+		'to_phone'			=> '4354354354@vtext.com',
+		'from_email_name'	=> 'Jack Johnson',
+		'disable_ssl'		=> true,
+		'debug'				=> false,
+
+		"active_coins"	=> [
+			"btc-ada",
+			"btc-dash",
+			"btc-ark",
+			"btc-powr",
+			"btc-eth",
+			"btc-ltc",
+			"btc-vtc",
+			"btc-waves",
+			"btc-mona",
+			"btc-omg",
+			"btc-eng",
+			"btc-sc",
+			"btc-nxt",
+			"btc-xrp",
+			"btc-neo",
+			"btc-snt",
+			"btc-emc2",
+			"btc-fct",
+			"btc-xvg",
+			"btc-cvc",
+			"btc-xlm",
+		],
+	];
+?>
