@@ -3,7 +3,7 @@
 	class Market {
 
 		public static function sell($market, $quantity, $rate) {
-			
+			if($qty <= 0) return false;
 			$request = new Request("market/selllimit");
 			
 			$total = $quantity * $rate;
@@ -16,11 +16,16 @@
 				"rate"		=> $rate
 			];
 
-
-			return $request->getRequest($data, true);
+			$result = $request->getRequest($data, true);
+			if($result->success) {
+				return $result->result->uuid;
+			}
+			
+			return false;
 		}
 
 		public static function buy($market, $quantity, $rate) {
+			if($qty <= 0) return false;
 			
 			$request = new Request("market/buylimit");
 			$total = $quantity * $rate;
@@ -33,8 +38,13 @@
 				"rate"		=> $rate
 			];
 
+			$result = $request->getRequest($data, true);
+			if($result->success) {
+				return $result->result->uuid;
+			}
+			
+			return false;
 
-			return $request->getRequest($data, true);
 		}
 
 	}

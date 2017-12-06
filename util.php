@@ -20,4 +20,9 @@
 		return $results->result;
 	}
 
+	function getPercentDifference($new_rate, $old_rate) {
+		if($old_rate <= 0 || $new_rate <= 0) return 0;
+		return (($new_rate - $old_rate) / $old_rate) * 100;
+	}
+
 ?>

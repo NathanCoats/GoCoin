@@ -12,8 +12,11 @@
 		public $bid;
 		public $ask;
 		public $purchase_rate = 0;
+		public $run_high;
 		public $rates = [];
 		public $pending_purchase_rate = 0;
+		public $buy_uuid = "";
+		public $sell_uuid = "";
 
 		public $open_buy_order_count;
 		public $open_sell_order_count;
@@ -99,11 +102,9 @@
 			$seconds = $minutes * 10;
 			if( !empty($this->rates[$seconds - 1]) ) {
 				$old_rate = floatval($this->rates[$seconds - 1]);
-				if($old_rate <= 0 || $new_rate <= 0) return 0;
 
-				$percent = (($new_rate - $old_rate) / $old_rate) * 100;
+				return getPercentDifference($new_rate, $old_rate);
 
-				return $percent;
 			}
 			else return 0;
 		}
@@ -123,6 +124,7 @@
 			//$status = Market::buy($this->type, $qty, $rate);
 			if($status) {
 				$this->setPurchaseRate($rate);
+				$this->setBuyUUID();
 			}
 			else {
 				$this->setPendingPurchaseRate($rate);
@@ -138,6 +140,7 @@
 			$status = true;
 			//$status = Market::sell($this->type, $qty, $rate);
 			if($status) {
+				$this->setRunHigh(0);
 				$this->setPurchaseRate(0);
 			}
 			//Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
@@ -176,6 +179,30 @@
 
 	    public function getHigh() {
 	        return $this->high;
+	    }
+
+        public function getBuyUUID() {
+            return $this->buy_uuid;
+        }
+
+        public function setBuyUUID($uuid) {
+            $this->buy_uuid = $uuid;
+        }
+
+        public function getSellUUID() {
+            return $this->sell_uuid;
+        }
+
+        public function setSellUUID($uuid) {
+            $this->sell_uuid = $uuid;
+        }
+
+	    public function getRunHigh() {
+	        return $this->run_high;
+	    }
+
+		public function setRunHigh($run_high) {
+	    	$this->run_high = (double)$run_high;
 	    }
 
 	    public function getLow() {

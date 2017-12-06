@@ -3,6 +3,9 @@
 	require __DIR__ . '/vendor/autoload.php';
 
 	try {
+
+		
+
 		//$coins = Coin::getAll();
 		$coins = Coin::getTestCoins();
 
@@ -10,8 +13,6 @@
 
 
 			foreach($coins as $coin) {
-				//$curTime = microtime(true);
-
 				$rate = $coin->getLiveLast();
 				$coin->addRate($rate);
 
@@ -31,28 +32,57 @@
 				$sixty_minute_previous = $coin->getPast(60);
 
 				$purchase_rate = $coin->getPurchaseRate();
-
-				// this will have to be fixed soon.
-				$qty = 1;
+				
+				if( $rate > $coin->getRunHigh() ) {
+					$coin->setRunHigh($rate);
+				}
 
 				// Buy Block
-				if( $five_minute_diff > 2  && $purchase_rate <= 0) {
-					$coin->buy($qty, $rate);
-					Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 2% over " . number_format($five_minute_previous, 8) );
-				}
-				if( $thirty_minute_diff > 5 && $purchase_rate <= 0) {
-					$coin->buy($qty, $rate);
-					Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 5% over " . number_format($thirty_minute_previous, 8) );
-				}
-				if( $sixty_minute_diff > 10 && $purchase_rate <= 0) {
-					$coin->buy($qty, $rate);
-					Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 10% over " . number_format($sixty_minute_previous, 8) );
+				if($purchase_rate <= 0) {
+
+					$balance = Account::getBalance($coin->getType());
+					if((double)$balance->Available <= 0) {
+						$qty = 0;
+						//throw new Exception("Nothing In Your " . $coin->getType() . " Wallet");
+					}
+					else {
+						$qty = (double)$balance->Available / 10;
+					}
+
+
+					if( $five_minute_diff > 2 ) {
+						$coin->buy($qty, $rate);
+						Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 2% over " . number_format($five_minute_previous, 8) );
+					}
+					if( $thirty_minute_diff > 5 ) {
+						$coin->buy($qty, $rate);
+						Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 5% over " . number_format($thirty_minute_previous, 8) );
+					}
+					if( $sixty_minute_diff > 10 ) {
+						$coin->buy($qty, $rate);
+						Notification::sendNotification($coin->getType(), "Buy at " . number_format($rate, 8) . " which should be 10% over " . number_format($sixty_minute_previous, 8) );
+					}
 				}
 
+
 				// Sell Block
-				else if( $five_minute_diff < 2 && $purchase_rate > 0) {
-					$coin->sell($qty, $rate);
-					Notification::sendNotification($coin->getType(), "Sell at " . number_format($rate, 8) . " which should be 2% under " . number_format($five_minute_previous, 8) );
+				else if($purchase_rate > 0 ) {
+
+					$balance = Account::getBalance($coin->getType());
+					if((double)$balance->Available <= 0) {
+
+						// verify that the order was placed properly
+
+						throw new Exception("Nothing In Your Wallet");
+					}
+
+					$qty = (double)$balance->Available;
+
+					$diff_percent = getPercentDifference($rate, $coin->getRunHigh());
+					if($diff_percent <= -2) {
+						$coin->sell($qty, $rate);
+						Notification::sendNotification($coin->getType(), "Sell at " . number_format($rate, 8) . " which should be 2% under " . number_format($coin->getRunHigh(), 8) );
+					}
 
 				}
 
@@ -63,7 +93,6 @@
 
 			}
 			sleep(1);
-			//$timeConsumed = round(microtime(true) - $curTime,3)*1000;
 
 		}
 
