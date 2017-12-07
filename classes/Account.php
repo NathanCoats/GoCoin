@@ -1,9 +1,9 @@
 <?php
-	
+
 	class Account {
 
 		public static function getOpenOrders($market, $quantity, $rate) {
-			
+
 		}
 
 		public static function getBalances() {
@@ -31,6 +31,7 @@
 			$request = new Request("account/getorder");
 			$results = $request->getRequest(["uuid" => $uuid], true);
 			if(!$results->success) throw new Exception("Unable to get Balances: " . $results->message);
+
 			return $results->result;
 		}
 

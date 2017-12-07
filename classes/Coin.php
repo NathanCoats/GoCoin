@@ -124,9 +124,12 @@
 
 			//$uuid = Market::buy($this->type, $qty, $rate);
 			if($uuid) {
+				$this->setRunHigh($rate);
 				$this->setPurchaseRate($rate);
 				$this->setBuyUUID($uuid);
 			}
+
+
 			else {
 				$this->setPendingPurchaseRate($rate);
 			}
@@ -178,15 +181,15 @@
 		}
 
 	    public function getType() {
-	        return $this->type;
+	    	return $this->type;
 	    }
 
 	    public function getHigh() {
-	        return $this->high;
+	    	return $this->high;
 	    }
 
         public function getBuyUUID() {
-            return $this->buy_uuid;
+        	return $this->buy_uuid;
         }
 
         public function setBuyUUID($uuid) {
