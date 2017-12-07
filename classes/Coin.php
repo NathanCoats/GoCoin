@@ -12,6 +12,7 @@
 		public $bid;
 		public $ask;
 		public $purchase_rate = 0;
+		public $sell_percentage = 0;
 		public $run_high;
 		public $rates = [];
 		public $pending_purchase_rate = 0;
@@ -24,11 +25,11 @@
 		public $previous_day;
 		public $created;
 
-		// thse are going to need to make actual requests to see what orders have been made and not just amounts.
-		public $open_buy_orders;
-		public $open_sell_orders;
+		// // thse are going to need to make actual requests to see what orders have been made and not just amounts.
+		// public $open_buy_orders;
+		// public $open_sell_orders;
 
-		public function __construct($type) {
+		public function __construct($type, $sell_percentage) {
 
 			$request = new Request("public/getmarketsummary");
 			$results = $request->getRequest(["market" => $type]);
@@ -48,6 +49,10 @@
 			$this->previous_day				= $result->PrevDay;
 			$this->created					= $result->Created;
 
+			if( floatval($sell_percentage) < 2) throw new Exception("Sell Percent Must be above 2");
+		
+			$this->sell_percentage			= floatval($sell_percentage);
+
 		}
 
 		public static function getTestCoins() {
@@ -56,7 +61,7 @@
 			$active_coins = Config::get("active_coins");
 
 			foreach ($active_coins as $coin) {
-				$coins[] = new Coin($coin);
+				$coins[] = new Coin($coin->name, $coin->sell_percentage);
 			}
 
 			return $coins;
@@ -72,7 +77,7 @@
 			foreach ($request_coins->result as $c) {
 				try {
 					if(preg_match("/^BTC/", $c->MarketName) == true) {
-						$coins[] = new Coin($c->MarketName);
+						$coins[] = new Coin($c->MarketName, 2);
 						//echo "$c->MarketName added";
 					}
 				}
@@ -129,14 +134,13 @@
 				$this->setBuyUUID($uuid);
 			}
 
-
 			else {
 				$this->setPendingPurchaseRate($rate);
 			}
 			//Notification::sendNotification($this->type, "Buy at " . number_format($rate,8));
 
 			// Log
-			//Log::log($this->type, $rate, date("Y-m-d H:i:s"));
+			Logger::log($this->type, $rate, "buy");
 			// exit(1);
 		}
 
@@ -153,13 +157,17 @@
 			//Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
 
 			// Log
-			//Log::log($this->type, $rate, date("Y-m-d H:i:s"));
+			Logger::log($this->type, $rate, "sell");
 			// exit(1);
 		}
 
 
 		public function getPurchaseRate() {
 			return floatval($this->purchase_rate);
+		}
+
+		public function getSellPercentage() {
+			return floatval($this->sell_percentage);
 		}
 
 		public function setPurchaseRate($rate) {
