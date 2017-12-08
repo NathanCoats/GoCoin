@@ -11,6 +11,10 @@
 		return getcwd();
 	}
 
+	function jsPath($filename) {
+		return "resources" . DS . "js" . DS . $filename;
+	}
+
 	function getMarkets() {
 		$request = new Request("public/getmarkets");
 		$results = $request->getRequest([]);

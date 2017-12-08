@@ -29,7 +29,7 @@
 		// public $open_buy_orders;
 		// public $open_sell_orders;
 
-		public function __construct($type, $sell_percentage) {
+		public function __construct($type, $sell_percentage = 2) {
 
 			$request = new Request("public/getmarketsummary");
 			$results = $request->getRequest(["market" => $type]);
@@ -77,7 +77,7 @@
 			foreach ($request_coins->result as $c) {
 				try {
 					if(preg_match("/^BTC/", $c->MarketName) == true) {
-						$coins[] = new Coin($c->MarketName, 2);
+						$coins[] = new Coin($c->MarketName);
 						//echo "$c->MarketName added";
 					}
 				}
@@ -123,25 +123,31 @@
 			else return 0;
 		}
 
+		public function markBought($rate, $uuid = "") {
+			$this->setRunHigh($rate);
+			$this->setPurchaseRate($rate);
+			$this->setBuyUUID($uuid);
+		}
+
+		public function markSold($uuid = "") {
+			$this->setRunHigh(0);
+			$this->setSellUUID($uuid);
+			$this->setPurchaseRate(0);
+		}
+
 		public function buy($qty, $rate) {
 			//this status variable is to make sure that the purchase went through.
 			$uuid = true;
 
 			//$uuid = Market::buy($this->type, $qty, $rate);
 			if($uuid) {
-				$this->setRunHigh($rate);
-				$this->setPurchaseRate($rate);
-				$this->setBuyUUID($uuid);
+				$this->markBought($rate, $uuid);
 			}
 
 			else {
 				$this->setPendingPurchaseRate($rate);
 			}
-			//Notification::sendNotification($this->type, "Buy at " . number_format($rate,8));
 
-			// Log
-			Logger::log($this->type, $rate, "buy");
-			// exit(1);
 		}
 
 		public function sell($qty, $rate) {
@@ -150,15 +156,9 @@
 
 			//$uuid = Market::sell($this->type, $qty, $rate);
 			if($uuid) {
-				$this->setRunHigh(0);
-				$this->setSellUUID($uuid);
-				$this->setPurchaseRate(0);
+				$this->markSold($uuid);
 			}
-			//Notification::sendNotification($this->type, "Sell at " . number_format($rate,8));
 
-			// Log
-			Logger::log($this->type, $rate, "sell");
-			// exit(1);
 		}
 
 
