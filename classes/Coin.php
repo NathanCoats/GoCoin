@@ -249,6 +249,15 @@
 	        return $result->result->Last;
 	    }
 
+	    public static function getLiveRate($type) {
+	    	$request = new Request("public/getticker");
+	    	$result = $request->getRequest(["market" => $type]);
+	    	if(!$result->success) {
+	    		throw new Exception("Marketplace Ticket not found");
+	    	}
+	        return $result->result->Last;
+	    }
+
 	    public function getBaseVolume() {
 	        return $this->base_volume;
 	    }
