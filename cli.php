@@ -99,8 +99,6 @@
 					}
 
 					$high_point =  $purchase_rate  + ($purchase_rate * $coin->getHighPercentage());
-					echo number_format($purchase_rate,8) . "\n";
-					echo number_format($high_point,8) . "\n";
 					$low_point =  $purchase_rate  - ($purchase_rate * $coin->getLowPercentage());
 					$percent_gain = $coin->getHighPercentage();
 					$percent_lost =  -1  * $coin->getLowPercentage();
