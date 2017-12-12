@@ -12,7 +12,8 @@
 		public $bid;
 		public $ask;
 		public $purchase_rate = 0;
-		public $sell_percentage = 0;
+		public $high_percentage = 0;
+		public $low_percentage = 0;
 		public $run_high;
 		public $rates = [];
 		public $pending_purchase_rate = 0;
@@ -29,7 +30,7 @@
 		// public $open_buy_orders;
 		// public $open_sell_orders;
 
-		public function __construct($type, $sell_percentage = 2) {
+		public function __construct($type, $high_percentage = 2, $low_percentage = 2) {
 
 			$request = new Request("public/getmarketsummary");
 			$results = $request->getRequest(["market" => $type]);
@@ -49,9 +50,11 @@
 			$this->previous_day				= $result->PrevDay;
 			$this->created					= $result->Created;
 
-			if( floatval($sell_percentage) < 2) throw new Exception("Sell Percent Must be above 2");
-		
-			$this->sell_percentage			= floatval($sell_percentage);
+			// if( floatval($high_percentage) < 2) throw new Exception("High Percent Must be above 2");
+			// if( floatval($low_percentage) < 2) throw new Exception("Low Percent Must be above 2");
+
+			$this->low_percentage			= floatval($low_percentage);
+			$this->high_percentage			= floatval($high_percentage);
 
 		}
 
@@ -61,7 +64,7 @@
 			$active_coins = Config::get("active_coins");
 
 			foreach ($active_coins as $coin) {
-				$coins[] = new Coin($coin->name, $coin->sell_percentage);
+				$coins[] = new Coin($coin->name, $coin->high_percentage, $coin->low_percentage);
 			}
 
 			return $coins;
@@ -142,6 +145,7 @@
 			//$uuid = Market::buy($this->type, $qty, $rate);
 			if($uuid) {
 				$this->markBought($rate, $uuid);
+
 			}
 
 			else {
@@ -166,8 +170,12 @@
 			return floatval($this->purchase_rate);
 		}
 
-		public function getSellPercentage() {
-			return floatval($this->sell_percentage);
+		public function getHighPercentage() {
+			return floatval($this->high_percentage);
+		}
+
+		public function getLowPercentage() {
+			return floatval($this->low_percentage);
 		}
 
 		public function setPurchaseRate($rate) {

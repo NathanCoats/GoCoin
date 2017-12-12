@@ -22,6 +22,7 @@
 				$percentages = Config::get("percentages");
 
 				foreach ($percentages as &$percent) {
+					$percent->previous  = $coin->getPast($percent->minutes);
 					$percent->difference = $coin->getDifference($rate, $percent->minutes);
 				}
 
@@ -31,7 +32,7 @@
 
 				// Buy Block
 				if($purchase_rate <= 0) {
-					
+
 
 					foreach ($percentages as $percent) {
 						if( $percent->difference >= $percent->percent ) {
@@ -45,14 +46,14 @@
 							if( Config::get("notify") ){
 								Notification::sendNotification(
 									$coin->getType(),
-									"Buy at " . number_format($rate, 8) . " which should be $percent->percent over " . number_format($coin->getRunHigh(), 8)
+									"Buy at " . number_format($rate, 8) . " which should be $percent->percent% over " . number_format($percent->previous, 8)
 								);
 
 								// this is done in the buy method, but in order to keep the notifications correct this needs to be done
 								$coin->markBought($rate);
 							}
 							if( Config::get("buy") ) {
-								try {		
+								try {
 									$balance = Account::getBalance();
 									if((double)$balance->Available <= 0) {
 										$qty = 1;
@@ -97,9 +98,17 @@
 						$qty = 1;
 					}
 
-					$sell_point = $purchase_rate *= $coin->getSellPercentage();
+					$high_point =  $purchase_rate  + ($purchase_rate * $coin->getHighPercentage());
+					echo number_format($purchase_rate,8) . "\n";
+					echo number_format($high_point,8) . "\n";
+					$low_point =  $purchase_rate  - ($purchase_rate * $coin->getLowPercentage());
+					$percent_gain = $coin->getHighPercentage();
+					$percent_lost =  -1  * $coin->getLowPercentage();
 
-					if($purchase_rate >= $sell_point) {
+					if($rate >= $high_point || $rate <= $low_point) {
+						if($rate >= $high_point) $percent = $percent_gain;
+						else $percent = $percent_lost;
+
 						if( Config::get("log") ) {
 							Logger::log($coin->getType(), $rate, 1, "sell");
 
@@ -109,7 +118,7 @@
 						if( Config::get("notify") ) {
 							Notification::sendNotification(
 								$coin->getType(),
-								"Sell at " . number_format($rate, 8) . " which should be $coin->sell_percentage % under " . number_format($coin->getRunHigh(), 8)
+								"Sell at " . number_format($rate, 8) . " which should be $percent% diff " . number_format($coin->getPurchaseRate(), 8)
 							);
 
 							// this is done in the sell method, but in order to keep the notifications correct this needs to be done
@@ -120,6 +129,7 @@
 						}
 					}
 
+
 				}
 
 				// Just Wait
@@ -128,17 +138,17 @@
 				}
 				$coin_end = microtime(true);
 				$coin_run_time = $coin_end - $coin_start;
-				echo $coin->getType() . ": took $coin_run_time\n";
+				//echo $coin->getType() . ": took $coin_run_time\n";
 
 			}
 			$time_end = microtime(true);
 			$run_time = $time_end - $time_start;
-			echo "$run_time\n";
+			//echo "$run_time\n";
 
 			if($run_time < 1) {
 				$diff = 1 - $run_time;
 				//usleep(100000 * $diff);
-			} 
+			}
 
 		}
 
