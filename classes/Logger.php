@@ -10,26 +10,40 @@
 
 		public static function buildXMLFile() {
 			$connection = self::getConnection();
-
-			$result = $connection->query("SELECT * FROM log WHERE date >= now() - INTERVAL 1 DAY;");
+			$active_coins = Config::get("active_coins");
 			$coins = [];
-			if ($result->num_rows > 0) {
-			    while($row = $result->fetch_assoc()) {
-			    	$rate = (double)$row["rate"];
-			    	$qty = (double)$row["qty"];
-			    	$type = $row["type"];
-			    	$action = $row["action"];
-			    	$amount = (empty($coins[$type])) ? 0 : $coins[$type];
 
-			    	if($action === "buy") {
-			    		$amount -= ($rate * .0025);
-			    	}
-			    	else if($action === "sell") {
-			    		$amount += ($rate * .0025);
-			    	}
+			foreach($active_coins as $type => $coin) {
 
-			    	$coins[$type] = $amount;
-			    }
+				$result = $connection->query('SELECT type, action, rate, qty FROM log WHERE type="' . $type . '" and date >= now() - INTERVAL 1 DAY ORDER BY date ASC');
+
+				$itterations = 0;
+				if($result->num_rows > 0) {
+					while( $row = $result->fetch_assoc()) {
+						$itterations++;
+						$rate = (double)$row["rate"];
+						$qty = (double)$row["qty"];
+						$type = $row["type"];
+						$action = $row["action"];
+						$amount = (empty($coins[$type])) ? 0 : $coins[$type];
+
+						if($itterations === 1 && $action === "sell") continue;
+
+						if($itterations == $result->num_rows && $action == "buy") continue;
+
+						if($action === "buy") {
+							$amount -= abs($rate * .0025);
+						}
+						else if($action === "sell") {
+							$amount += abs($rate * .0025);
+						}
+
+						$coins[$type] = $amount;
+					}
+				}
+
+
+
 			}
 
 			$xml_string = "<?xml version='1.0' encoding='UTF-8' ?>\n<root>";
@@ -37,7 +51,7 @@
 			//give a baseline
 			$xml_string .= "\n\t<item>";
 			$xml_string .= "\n\t\t<coin>Baseline</coin>";
-			$xml_string .= "\n\t\t<gain>" . number_format(0, 12) . "</gain>";
+			$xml_string .= "\n\t\t<gain>" . number_format(.0000001, 12) . "</gain>";
 			$xml_string .= "\n\t</item>";
 
 			foreach ($coins as $index => $coin) {

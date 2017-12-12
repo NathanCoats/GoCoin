@@ -54,7 +54,7 @@
 			$request = new Request("account/getbalance");
 			$results = $request->getRequest(["currency" => $currency], true);
 
-			if(!$results->success) throw new Exception("Unable to get Balance $currency: " . $results->message);
+			if(!$results->success) throw new Exception("Unable to get Balance $currency:");
 			return $results->result;
 		}
 

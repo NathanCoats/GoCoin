@@ -12,7 +12,6 @@
 		public $bid;
 		public $ask;
 		public $purchase_rate = 0;
-		public $percentages = [];
 		public $high_percentage = 0;
 		public $low_percentage = 0;
 		public $run_high;
@@ -56,7 +55,6 @@
 			// if( floatval($high_percentage) < 2) throw new Exception("High Percent Must be above 2");
 			// if( floatval($low_percentage) < 2) throw new Exception("Low Percent Must be above 2");
 
-			$this->percentages 				= Config::get("percentages");
 			$this->low_percentage			= floatval($active_coins[$type]->low_percentage);
 			$this->high_percentage			= floatval($active_coins[$type]->high_percentage);
 
@@ -248,7 +246,7 @@
 	    	$request = new Request("public/getticker");
 	    	$result = $request->getRequest(["market" => $this->type]);
 	    	if(!$result->success) {
-	    		throw new Exception("Marketplace Ticket not found");
+	    		throw new Exception("Marketplace Ticket not found: $result->message");
 	    	}
 	        return $result->result->Last;
 	    }
@@ -257,7 +255,7 @@
 	    	$request = new Request("public/getticker");
 	    	$result = $request->getRequest(["market" => $type]);
 	    	if(!$result->success) {
-	    		throw new Exception("Marketplace Ticket not found");
+	    		throw new Exception("Marketplace Ticket not found: $result->message");
 	    	}
 	        return $result->result->Last;
 	    }

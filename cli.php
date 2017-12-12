@@ -24,8 +24,9 @@
 
 				$rate = number_format($rate, 8);
 				$rate = (float)$rate;
+				$percentages 	= Config::get("percentages");
 
-				foreach ($coin->percentages as &$percent) {
+				foreach ($percentages as &$percent) {
 					$percent->previous  = $coin->getPast($percent->minutes);
 					$percent->difference = $coin->getDifference($rate, $percent->minutes);
 				}
@@ -35,7 +36,7 @@
 				// Buy Block
 				if($purchase_rate <= 0) {
 
-					foreach ($coin->percentages as $percent) {
+					foreach ($percentages as $percent) {
 						if( $percent->difference >= $percent->percent ) {
 
 							if( $log ) {
@@ -87,7 +88,7 @@
 
 					try {
 
-						$balance = Account::getBalance($coin->getType());
+						$balance = Account::getBalance( $coin->getType() );
 						if((double)$balance->Available <= 0) {
 							// verify that the order was placed properly
 							throw new Exception("Nothing In Your Wallet");
