@@ -12,6 +12,7 @@
 		public $bid;
 		public $ask;
 		public $purchase_rate = 0;
+		public $percentages = [];
 		public $high_percentage = 0;
 		public $low_percentage = 0;
 		public $run_high;
@@ -30,7 +31,7 @@
 		// public $open_buy_orders;
 		// public $open_sell_orders;
 
-		public function __construct($type, $high_percentage = 2, $low_percentage = 2) {
+		public function __construct($type) {
 
 			$request = new Request("public/getmarketsummary");
 			$results = $request->getRequest(["market" => $type]);
@@ -50,11 +51,14 @@
 			$this->previous_day				= $result->PrevDay;
 			$this->created					= $result->Created;
 
+			$active_coins = Config::get("active_coins");
+
 			// if( floatval($high_percentage) < 2) throw new Exception("High Percent Must be above 2");
 			// if( floatval($low_percentage) < 2) throw new Exception("Low Percent Must be above 2");
 
-			$this->low_percentage			= floatval($low_percentage);
-			$this->high_percentage			= floatval($high_percentage);
+			$this->percentages 				= Config::get("percentages");
+			$this->low_percentage			= floatval($active_coins[$type]->low_percentage);
+			$this->high_percentage			= floatval($active_coins[$type]->high_percentage);
 
 		}
 
@@ -63,8 +67,8 @@
 			$coins = [];
 			$active_coins = Config::get("active_coins");
 
-			foreach ($active_coins as $coin) {
-				$coins[] = new Coin($coin->name, $coin->high_percentage, $coin->low_percentage);
+			foreach ($active_coins as $name =>  $coin) {
+				$coins[] = new Coin($name);
 			}
 
 			return $coins;

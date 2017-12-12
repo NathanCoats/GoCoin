@@ -6,6 +6,12 @@
 
 		//$coins = Coin::getAll();
 		$coins = Coin::getTestCoins();
+		
+		$log = Config::get("log");
+		$notify = Config::get("notify");
+		$buy = Config::get("buy");
+
+
 		echo "Coins Retrieved and Process Starting:\n";
 		if(!is_array(Config::get("percentages"))) throw new Exception("config.percentages must be defined as an array");
 		while(true) {
@@ -19,31 +25,26 @@
 				$rate = number_format($rate, 8);
 				$rate = (float)$rate;
 
-				$percentages = Config::get("percentages");
-
-				foreach ($percentages as &$percent) {
+				foreach ($coin->percentages as &$percent) {
 					$percent->previous  = $coin->getPast($percent->minutes);
 					$percent->difference = $coin->getDifference($rate, $percent->minutes);
 				}
 
-
 				$purchase_rate = $coin->getPurchaseRate();
-
 
 				// Buy Block
 				if($purchase_rate <= 0) {
 
-
-					foreach ($percentages as $percent) {
+					foreach ($coin->percentages as $percent) {
 						if( $percent->difference >= $percent->percent ) {
 
-							if( Config::get("log") ) {
+							if( $log ) {
 								Logger::log($coin->getType(), $rate, 1, "buy");
 
 								// this is done in the buy method, but in order to keep the logs correct this needs to be done
 								$coin->markBought($rate);
 							}
-							if( Config::get("notify") ){
+							if( $notify ){
 								Notification::sendNotification(
 									$coin->getType(),
 									"Buy at " . number_format($rate, 8) . " which should be $percent->percent% over " . number_format($percent->previous, 8)
@@ -52,7 +53,7 @@
 								// this is done in the buy method, but in order to keep the notifications correct this needs to be done
 								$coin->markBought($rate);
 							}
-							if( Config::get("buy") ) {
+							if( $buy ) {
 								try {
 									$balance = Account::getBalance();
 									if((double)$balance->Available <= 0) {
@@ -98,8 +99,8 @@
 						$qty = 1;
 					}
 
-					$high_point =  $purchase_rate  + ($purchase_rate * $coin->getHighPercentage());
-					$low_point =  $purchase_rate  - ($purchase_rate * $coin->getLowPercentage());
+					$high_point =  $purchase_rate  + ($purchase_rate * ( $coin->getHighPercentage() / 100) );
+					$low_point =  $purchase_rate  - ($purchase_rate * ( $coin->getLowPercentage() / 100) );
 					$percent_gain = $coin->getHighPercentage();
 					$percent_lost =  -1  * $coin->getLowPercentage();
 
@@ -107,13 +108,13 @@
 						if($rate >= $high_point) $percent = $percent_gain;
 						else $percent = $percent_lost;
 
-						if( Config::get("log") ) {
+						if( $log ) {
 							Logger::log($coin->getType(), $rate, 1, "sell");
 
 							// this is done in the sell method, but in order to keep the logs correct this needs to be done
 							$coin->markSold();
 						}
-						if( Config::get("notify") ) {
+						if( $notify ) {
 							Notification::sendNotification(
 								$coin->getType(),
 								"Sell at " . number_format($rate, 8) . " which should be $percent% diff " . number_format($coin->getPurchaseRate(), 8)
@@ -122,7 +123,7 @@
 							// this is done in the sell method, but in order to keep the notifications correct this needs to be done
 							$coin->markSold();
 						}
-						if( Config::get("buy") ) {
+						if( $buy ) {
 							$coin->sell($qty, $rate);
 						}
 					}

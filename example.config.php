@@ -36,110 +36,89 @@
 
 
 		"active_coins"	=> [
-			(object)[
-				"name" => "btc-ada",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-ada" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-dash",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-dash" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-ark",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-ark" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-powr",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-powr" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-eth",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-eth" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-ltc",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-ltc" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-vtc",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-vtc" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-waves",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-waves" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-mona",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-mona" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-omg",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-omg" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-eng",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-eng" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-sc",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-sc" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-nxt",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-nxt" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-xrp",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-xrp" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-neo",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-neo" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-snt",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-snt" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-emc2",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-emc2" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-fct",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-fct" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-xvg",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-xvg" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-cvc",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-cvc" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
-			(object)[
-				"name" => "btc-xlm",
-				"high_percentage" => 0.01,
-				"low_percentage" => 0.01,
+			"btc-xlm" => (object)[
+				"high_percentage" => 1.0,
+				"low_percentage" => 2.0,
 			],
 		],
 	];
