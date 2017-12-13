@@ -46,7 +46,7 @@
 								$coin->markBought($rate);
 							}
 							if( $notify ){
-								Notification::sendNotification(
+								Notification::sendEmail(
 									$coin->getType(),
 									"Buy at " . number_format($rate, 8) . " which should be $percent->percent% over " . number_format($percent->previous, 8)
 								);
@@ -116,7 +116,7 @@
 							$coin->markSold();
 						}
 						if( $notify ) {
-							Notification::sendNotification(
+							Notification::sendEmail(
 								$coin->getType(),
 								"Sell at " . number_format($rate, 8) . " which should be $percent% diff " . number_format($coin->getPurchaseRate(), 8)
 							);

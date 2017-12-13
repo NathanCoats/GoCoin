@@ -36,7 +36,33 @@
 			return $this->mail;
 		}
 
-		public static function sendNotification($subject, $body) {
+		public static function sendText($subject, $body) {
+			try {
+
+				$notification = new Notification();
+				$mail = $notification->getMail();
+
+			    //Recipients
+			    $mail->setFrom(Config::get("email"), Config::get("from_email_name"));
+
+			    $mail->addAddress(Config::get("to_phone"));
+
+			    $mail->isHTML(true);
+			    $mail->Subject = $subject;
+			    $mail->Body    = $body;
+
+			    $mail->send();
+			    echo 'Message has been sent';
+			}
+			catch (Exception $e) {
+				if(Config::get("debug")) dd($e);
+				else {
+					throw $e;
+				}
+			}
+		}
+
+		public static function sendEmail($subject, $body) {
 			try {
 
 				$notification = new Notification();
@@ -46,7 +72,6 @@
 			    $mail->setFrom(Config::get("email"), Config::get("from_email_name"));
 
 			    $mail->addAddress(Config::get("to_email"));
-			    // $mail->addAddress(Config::get("to_phone"));
 			    //$mail->addReplyTo('bla@bla.com', 'Sweet');
 			    //$mail->addCC('cc@cool');
 			    //$mail->addBCC('bcc@cool');
