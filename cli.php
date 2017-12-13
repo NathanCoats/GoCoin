@@ -6,7 +6,7 @@
 
 		//$coins = Coin::getAll();
 		$coins = Coin::getTestCoins();
-		
+
 		$log = Config::get("log");
 		$notify = Config::get("notify");
 		$buy = Config::get("buy");
@@ -22,8 +22,8 @@
 				$rate = $coin->getLiveLast();
 				$coin->addRate($rate);
 
-				$rate = number_format($rate, 8);
-				$rate = (float)$rate;
+				// $rate = number_format($rate, 8);
+				// $rate = (float)$rate;
 				$percentages 	= Config::get("percentages");
 
 				foreach ($percentages as &$percent) {
@@ -32,11 +32,11 @@
 				}
 
 				$purchase_rate = $coin->getPurchaseRate();
-
 				// Buy Block
 				if($purchase_rate <= 0) {
 
 					foreach ($percentages as $percent) {
+						if($purchase_rate > 0) continue;
 						if( $percent->difference >= $percent->percent ) {
 
 							if( $log ) {

@@ -2,13 +2,15 @@
 
 	class Logger {
 
+		public $total = 0;
+
 		public static function getConnection() {
 			$connection = new mysqli(Config::get("db_host"), Config::get("db_user"), Config::get("db_pass"), Config::get("db"));
 			if($connection->connect_error) throw new Exception("Couldn't Connect $connection->connect_error");
 			return $connection;
 		}
 
-		public static function buildXMLFile() {
+		public function buildXMLFile() {
 			$connection = self::getConnection();
 			$active_coins = Config::get("active_coins");
 			$coins = [];
@@ -57,7 +59,7 @@
 			foreach ($coins as $index => $coin) {
 				//$c = new Coin($index);
 				//$last = $c->getLast();
-
+				$this->total += $coin;
 				$xml_string .= "\n\t<item>";
 				$xml_string .= "\n\t\t<coin>$index</coin>";
 				$xml_string .= "\n\t\t<gain>" . number_format($coin, 12) . "</gain>";
@@ -72,6 +74,10 @@
 			fclose($file);
 
 			$connection->close();
+		}
+
+		public function getTotal() {
+			return $this->total;
 		}
 
 		public static function log($type, $rate, $qty = 1, $action = "buy") {
