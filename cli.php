@@ -39,7 +39,7 @@
 						if( $limit->difference >= $limit->percent ) {
 
 							if( $log ) {
-								Logger::log($coin->getType(), $rate, 1, "buy");
+								Logger::log($coin->getType(), $rate, 0, 1, "buy");
 
 								// this is done in the buy method, but in order to keep the logs correct this needs to be done
 								$coin->markBought($rate);
@@ -109,7 +109,7 @@
 						else $percent = $percent_lost;
 
 						if( $log ) {
-							Logger::log($coin->getType(), $rate, 1, "sell");
+							Logger::log($coin->getType(), $rate, $diff_percent, 1, "sell");
 
 							// this is done in the sell method, but in order to keep the logs correct this needs to be done
 							$coin->markSold();

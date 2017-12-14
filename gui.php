@@ -29,4 +29,8 @@
 
 
 	echo "<br />";
-	echo number_format($logger->getTotal(),8);
+	echo "Bit-Coin Gain: " . number_format($logger->getTotal(),8) . "\n";
+	echo "<br />";
+	echo "Percent Gain: " . number_format($logger->getPercentage(),4) . "\n";
+
+?>
