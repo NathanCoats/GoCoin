@@ -25,6 +25,7 @@
 						$itterations++;
 						$rate = (double)$row["rate"];
 						$qty = (double)$row["qty"];
+						$rate *= $qty;
 						$type = $row["type"];
 						$action = $row["action"];
 						$amount = (empty($coins[$type])) ? 0 : $coins[$type];
@@ -33,13 +34,15 @@
 
 						if($itterations == $result->num_rows && $action == "buy") continue;
 
+						$fee_amount = $rate * .0025;
 						if($action === "buy") {
-							$amount -= abs($rate * .0025);
+							$amount -= $rate;
+							$amount -= $fee_amount;
 						}
 						else if($action === "sell") {
-							$amount += abs($rate * .0025);
+							$amount += $rate;
+							$amount += $fee_amount;
 						}
-
 						$coins[$type] = $amount;
 					}
 				}
@@ -53,16 +56,17 @@
 			//give a baseline
 			$xml_string .= "\n\t<item>";
 			$xml_string .= "\n\t\t<coin>Baseline</coin>";
-			$xml_string .= "\n\t\t<gain>" . number_format(.0000001, 12) . "</gain>";
+			$xml_string .= "\n\t\t<gain>" . number_format(.0000001, 9) . "</gain>";
 			$xml_string .= "\n\t</item>";
 
 			foreach ($coins as $index => $coin) {
 				//$c = new Coin($index);
 				//$last = $c->getLast();
 				$this->total += $coin;
+
 				$xml_string .= "\n\t<item>";
 				$xml_string .= "\n\t\t<coin>$index</coin>";
-				$xml_string .= "\n\t\t<gain>" . number_format($coin, 12) . "</gain>";
+				$xml_string .= "\n\t\t<gain>" . number_format($coin, 9) . "</gain>";
 				$xml_string .= "\n\t</item>";
 			}
 

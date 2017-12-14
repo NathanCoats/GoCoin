@@ -8,6 +8,7 @@
 	use AmCharts\Chart;
 	use AmCharts\Graph;
 	use AmCharts\Manager as ChartManager;
+	
 
 	$logger = new Logger();
 	$logger->buildXMLFile();

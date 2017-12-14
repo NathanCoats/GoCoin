@@ -13,7 +13,6 @@
 
 
 		echo "Coins Retrieved and Process Starting:\n";
-		if(!is_array(Config::get("percentages"))) throw new Exception("config.percentages must be defined as an array");
 		while(true) {
 
 			$time_start = microtime(true);
@@ -24,20 +23,20 @@
 
 				// $rate = number_format($rate, 8);
 				// $rate = (float)$rate;
-				$percentages 	= Config::get("percentages");
+				$time_limits 	= $coin->getTimeLimits();
 
-				foreach ($percentages as &$percent) {
-					$percent->previous  = $coin->getPast($percent->minutes);
-					$percent->difference = $coin->getDifference($rate, $percent->minutes);
+				foreach ($time_limits as &$limit) {
+					$limit->previous  = $coin->getPast($limit->minutes);
+					$limit->difference = $coin->getDifference($rate, $limit->minutes);
 				}
 
 				$purchase_rate = $coin->getPurchaseRate();
 				// Buy Block
 				if($purchase_rate <= 0) {
 
-					foreach ($percentages as $percent) {
+					foreach ($time_limits as $limit) {
 						if($purchase_rate > 0) continue;
-						if( $percent->difference >= $percent->percent ) {
+						if( $limit->difference >= $limit->percent ) {
 
 							if( $log ) {
 								Logger::log($coin->getType(), $rate, 1, "buy");
@@ -48,7 +47,7 @@
 							if( $notify ){
 								Notification::sendEmail(
 									$coin->getType(),
-									"Buy at " . number_format($rate, 8) . " which should be $percent->percent% over " . number_format($percent->previous, 8)
+									"Buy at " . number_format($rate, 8) . " which should be $limit->percent% over " . number_format($limit->previous, 8)
 								);
 
 								// this is done in the buy method, but in order to keep the notifications correct this needs to be done

@@ -14,6 +14,7 @@
 		public $purchase_rate = 0;
 		public $high_percentage = 0;
 		public $low_percentage = 0;
+		public $time_limits;
 		public $run_high;
 		public $rates = [];
 		public $pending_purchase_rate = 0;
@@ -55,9 +56,15 @@
 			// if( floatval($high_percentage) < 2) throw new Exception("High Percent Must be above 2");
 			// if( floatval($low_percentage) < 2) throw new Exception("Low Percent Must be above 2");
 
+			// todo validate these configurations
+			$this->time_limits				= $active_coins[$type]->time_limits;
 			$this->low_percentage			= floatval($active_coins[$type]->low_percentage);
 			$this->high_percentage			= floatval($active_coins[$type]->high_percentage);
 
+		}
+
+		public function getTimeLimits() {
+			return $this->time_limits;
 		}
 
 		public static function getTestCoins() {
@@ -138,6 +145,7 @@
 			$this->setRunHigh(0);
 			$this->setSellUUID($uuid);
 			$this->setPurchaseRate(0);
+			$this->rates = [];
 		}
 
 		public function buy($qty, $rate) {
@@ -147,7 +155,6 @@
 			//$uuid = Market::buy($this->type, $qty, $rate);
 			if($uuid) {
 				$this->markBought($rate, $uuid);
-
 			}
 
 			else {
