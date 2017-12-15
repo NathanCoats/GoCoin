@@ -48,11 +48,9 @@
 							$amount += $fee_amount;
 						}
 						$coins[$type]['amount'] = $amount;
-						$coins[$type]['percent'] = $percent;
+						$coins[$type]['percent'] = $percent / count($active_coins);
 					}
 				}
-
-
 
 			}
 
