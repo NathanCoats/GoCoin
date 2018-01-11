@@ -46,6 +46,7 @@
 		}
 
 		public static function getBalance($currency = "BTC") {
+			return 0;
 			$currency = strtoupper($currency);
 			if(preg_match("/^BTC-.{2,5}$/", $currency)) {
 				$currency = substr($currency, 4);

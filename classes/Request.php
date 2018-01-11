@@ -2,7 +2,8 @@
 
 	class Request {
 
-		public $base_url = "https://bittrex.com/api";
+		//public $base_url = "https://bittrex.com/api";
+		public $base_url = "https://www.binance.com/api";
 		public $uri = "";
 		public $url = "";
 		public $version = "";
@@ -13,7 +14,7 @@
 		public function __construct($uri) {
 
 			$this->uri = $uri;
-			$this->version = "v1.1";
+			$this->version = "v1";
 			$this->url = "$this->base_url/$this->version/$this->uri";
 			
 			$this->secret = Config::get("secret");
@@ -29,7 +30,6 @@
 			}
 
 			$url = $this->url . "?" . http_build_query($data);
-
 			$sign = hash_hmac('sha512', $url, $this->secret);
 			
 			$ch  =  curl_init($url);
@@ -41,7 +41,6 @@
 			    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 			}
-
 			$result = curl_exec($ch);
 			$error = curl_error($ch);
 

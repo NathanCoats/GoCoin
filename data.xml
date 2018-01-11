@@ -2,54 +2,10 @@
 <root>
 	<item>
 		<coin>Baseline</coin>
-		<gain>0.000000100000</gain>
+		<gain>1.0000</gain>
 	</item>
 	<item>
-		<coin>btc-powr</coin>
-		<gain>0.000000003625</gain>
-	</item>
-	<item>
-		<coin>btc-eth</coin>
-		<gain>0.000001125050</gain>
-	</item>
-	<item>
-		<coin>btc-waves</coin>
-		<gain>-0.000000047375</gain>
-	</item>
-	<item>
-		<coin>btc-omg</coin>
-		<gain>0.000000018900</gain>
-	</item>
-	<item>
-		<coin>btc-eng</coin>
-		<gain>0.000000001175</gain>
-	</item>
-	<item>
-		<coin>btc-nxt</coin>
-		<gain>-0.000000001000</gain>
-	</item>
-	<item>
-		<coin>btc-neo</coin>
-		<gain>0.000000157700</gain>
-	</item>
-	<item>
-		<coin>btc-snt</coin>
-		<gain>0.000000000200</gain>
-	</item>
-	<item>
-		<coin>btc-emc2</coin>
-		<gain>-0.000000004875</gain>
-	</item>
-	<item>
-		<coin>btc-xvg</coin>
-		<gain>0.000000000025</gain>
-	</item>
-	<item>
-		<coin>btc-cvc</coin>
-		<gain>0.000000000625</gain>
-	</item>
-	<item>
-		<coin>btc-xlm</coin>
-		<gain>-0.000000000475</gain>
+		<coin>WAVESBTC</coin>
+		<gain>0.0917</gain>
 	</item>
 </root>

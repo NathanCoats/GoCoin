@@ -5,7 +5,7 @@
 	try {
 
 		//$coins = Coin::getAll();
-		$coins = Coin::getTestCoins();
+		$coins = BinanceCoin::getTestCoins();
 
 		$log = Config::get("log");
 		$notify = Config::get("notify");
@@ -57,12 +57,12 @@
 								if( $buy ) {
 									try {
 										$balance = Account::getBalance();
-										if((double)$balance->Available <= 0) {
+										if((double)$balance <= 0) {
 											$qty = 1;
 											//throw new Exception("Nothing In Your BTC Wallet");
 										}
 										else {
-											$qty = (double)$balance->Available / 2;
+											$qty = (double)$balance / 2;
 										}
 									}
 									catch(Exception $e) {
@@ -89,12 +89,12 @@
 						try {
 
 							$balance = Account::getBalance( $coin->getType() );
-							if((double)$balance->Available <= 0) {
+							if((double)$balance <= 0) {
 								// verify that the order was placed properly
 								throw new Exception("Nothing In Your Wallet");
 							}
 
-							$qty = (double)$balance->Available;
+							$qty = (double)$balance;
 						}
 						catch(Exception $e) {
 							$qty = 1;

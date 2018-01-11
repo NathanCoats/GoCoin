@@ -1,6 +1,6 @@
 <?php
 
-	class Coin {
+	class BittrexCoin {
 
 		public $type = "";
 		public $high;

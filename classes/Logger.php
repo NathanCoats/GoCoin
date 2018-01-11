@@ -37,7 +37,7 @@
 
 						if($itterations == $result->num_rows && $action == "buy") continue;
 
-						$fee_amount = $rate * .0025;
+						$fee_amount = $rate * .0005;
 						$percent += $percent_difference;
 						if($action === "buy") {
 							$amount -= $rate;
