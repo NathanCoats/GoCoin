@@ -6,6 +6,10 @@
 	</item>
 	<item>
 		<coin>WAVESBTC</coin>
-		<gain>0.0917</gain>
+		<gain>-0.6811</gain>
+	</item>
+	<item>
+		<coin>OMGBTC</coin>
+		<gain>0.1364</gain>
 	</item>
 </root>

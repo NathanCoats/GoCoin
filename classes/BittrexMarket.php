@@ -1,6 +1,6 @@
 <?php
 	
-	class Market {
+	class BittrexMarket {
 
 		public static function sell($market, $quantity, $rate) {
 			if($qty <= 0) return false;
